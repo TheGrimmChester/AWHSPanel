@@ -1,0 +1,50 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<div class="container">
+    <div style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div style="text-align: center;"><span style="
+    color: #0993d7;
+    font-size: 45px;
+">AWHS</span><span style="
+    color: #808080;
+    font-size: 45px;
+    font-weight: 300;
+">Panel</span><br></div>
+        <hr>
+            <div class="panel" >
+                <div class="panel-heading" style="background-color: #f9f9f9;border-bottom: 1px solid #cacaca">
+                        <div class="panel-title">Inscription</div>
+                    </div>
+                <div style="background-color: #f9f9f9;" class="panel-body" >
+                        {{ form_start(form) }}
+
+                        {{ form_widget(form.firstname, { 'attr': {'class': 'form-control', 'placeholder': 'Prénom'} }) }}
+                        <br>
+                        {{ form_widget(form.lastname, { 'attr': {'class': 'form-control', 'placeholder': 'Nom'} }) }}
+                        <br>
+										{{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Nom d utilisateur'} }) }}
+										<br>
+										{{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Adresse email'} }) }}
+										<br>
+										{{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'} }) }}
+										<br>
+										{{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control', 'placeholder': 'Verification mot de passe'} }) }}
+										{{ form_rest(form) }}
+							
+                                <div style="margin-top:10px" class="form-group">
+                                    <div class="col-sm-12 controls">
+                                      <input type="submit" class="btn btn-success btn-flat" value="{{ 'Sign Up'|trans }}" />&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                        <div class="form-group">
+                            <div class="col-md-12 control">
+                                Already registered ?
+                                <a href="{{ path('fos_user_security_login') }}">
+                                    Sign in
+                                </a>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+            </div>  
+        </div>        
+</div> 

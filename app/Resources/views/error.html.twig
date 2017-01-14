@@ -1,0 +1,35 @@
+{% extends awhs.template~'/base_login.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ app_name }}{% endblock %}
+
+{% block pageHeader %}{% endblock %}
+
+{% block sidebarMenu %}
+    {% block sidebarMenuDashboard %}{% endblock %}
+    {% block sidebarMenuMore %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+    {% block fos_user_content %}
+        <div class="container">
+            <div style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+				<div style="text-align: center;">
+					<span style="color: #0993d7; font-size: 45px;">AWHS</span>
+					<span style="color: #808080; font-size: 45px; font-weight: 300;">Panel</span>
+				</div>
+				<div style="text-align: center;">
+					<span style="color: #808080; font-size: 15px;">Automated hosting provider</span>
+				</div>
+                <hr>
+                <div class="panel" >
+                    <div class="panel-body" style="text-align:center">
+                        <h1>{{ status_code }}: {{ status_text }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock fos_user_content %}
+{% endblock %}
+

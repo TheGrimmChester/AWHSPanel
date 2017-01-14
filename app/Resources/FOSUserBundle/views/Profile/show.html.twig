@@ -1,0 +1,18 @@
+{% extends '::'~awhs.template~'//base_dashboard.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %} {{ app_name }} - Profil{% endblock %}
+
+{% block sidebarMenuDashboardActive %} active{% endblock %}
+
+{% block fastNavigation %}{% endblock %}
+
+{% block pageHeader %}
+{% endblock %}
+
+{% block content %}
+{% block fos_user_content %}
+{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock %}

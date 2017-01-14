@@ -1,0 +1,31 @@
+{% extends awhs.template~'/base_dashboard_visitor.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ app_name }}{% endblock %}
+
+{% block pageHeader %}{% endblock %}
+
+{% block sidebarMenu %}
+	{% block sidebarMenuDashboard %}{% endblock %}
+	{% block sidebarMenuMore %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+{% block fos_user_content %}
+{% if error %}
+    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+{% endif %}
+<div class="container">    
+        <div style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+				<div style="text-align: center;"><img style="max-width:100%" src="{{ asset('/images/awhspanel.png') }}"><br></div><br>
+            <div class="panel" >
+				<div class="panel-body" style="text-align:center">                            
+					<h1>{{ status_code }}: {{ status_text }}:</h1>
+				</div>
+            </div>  
+        </div>        
+</div> 
+{% endblock fos_user_content %}
+{% endblock %}
+

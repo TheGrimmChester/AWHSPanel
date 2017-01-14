@@ -1,0 +1,422 @@
+{% spaceless %}
+    <!DOCTYPE html>
+    <!--[if IE 8]>
+    <html class="ie8"> <![endif]-->
+    <!--[if IE 9]>
+    <html class="ie9 gt-ie8"> <![endif]-->
+    <!--[if gt IE 9]><!-->
+    <html class="gt-ie8 gt-ie9 not-ie"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ asset('bundles/awhscore/css/fonts.css') }}">
+
+        {% stylesheets
+        '@AWHSCoreBundle/Resources/public/css/bootstrap.min.css'
+        '@AWHSCoreBundle/Resources/public/css/animate.css'
+        '@AWHSCoreBundle/Resources/public/css/modern-black-admin.min.css'
+        '@AWHSCoreBundle/Resources/public/css/widgets.min.css'
+        output='css/style.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset(asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% stylesheets
+        '@AWHSCoreBundle/Resources/public/css/themes.min.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset(asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% block extendCss %}{% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+        {% block extendJs %}{% endblock %}
+        <!--[if lt IE 9]>
+        <script src="assets/javascripts/ie.min.js"></script>
+        <![endif]-->
+        <style>
+            /*.modern-black-admin #main-menu .mmc-dropdown-open-ul a, .modern-black-admin #main-menu .navigation a{*/
+                /*color: #0993d7;!*#7bc17a;*!*/
+            /*}*/
+            /*.modern-black-admin #main-navbar .navbar-collapse{*/
+                /*background: #353535;*/
+            /*}*/
+            /*.modern-black-admin #main-navbar .navbar-nav>li>a{*/
+                /*color: #0993d7;!*#7bc17a;*!*/
+            /*}*/
+            /*.modern-black-admin #main-navbar #main-menu-toggle, .modern-black-admin #main-navbar .navbar-brand, .modern-black-admin #main-navbar .navbar-header a, .modern-black-admin #main-navbar .navbar-toggle{*/
+                /*color: #0993d7;!*#7bc17a;*!*/
+            /*}*/
+            .modern-black-admin #main-navbar #main-menu-toggle, .modern-black-admin #main-navbar .navbar-brand, .modern-black-admin #main-navbar .navbar-header a, .modern-black-admin #main-navbar .navbar-toggle{
+                color: #1a2229;/*#7bc17a;*/
+            }
+            /*.modern-black-admin #main-navbar #main-menu-toggle {*/
+                /*background: #1a2229;*/
+            /*}*/
+            /*.modern-black-admin #main-navbar .navbar-collapse {*/
+                /*background: #1a2229;*/
+            /*}*/
+            /*.modern-black-admin #main-navbar .navbar-header{*/
+                /*background: #1a2229;*/
+            /*}*/
+        </style>
+    </head>
+    <body class="modern-black-admin main-menu-animated">
+    <div id="overlay" style="
+	display:none;
+    position: fixed;
+    background-color: black;
+    opacity: 0.5;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;">{% block overlay %}{% endblock %}</div>
+    <script>var init = [];</script>
+    <div id="main-wrapper">
+        <div id="main-navbar" class="navbar navbar-inverse" role="navigation">
+            <button type="button" id="main-menu-toggle"><i class="navbar-icon fa fa-outdent icon"></i><span
+                        class="hide-menu-text">HIDE MENU</span></button>
+            <div class="navbar-inner">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">
+                        {% block navbarBrand %}<span style="font-family: 'Raleway',sans-serif">AWHS</span><span style="font-family: 'Raleway',sans-serif;color: #d70909; ">3.0</span>{% endblock %}
+                    </a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#main-navbar-collapse"><i class="navbar-icon fa fa-bars"></i></button>
+                </div>
+                <div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
+                    <div>
+                        {% block navbarMenu %}{% endblock %}
+                        <div class="right clearfix">
+                            <ul class="nav navbar-nav pull-right right-navbar-nav">
+                                {% if (user is defined) and (user.tasks is defined) %}
+                                    {% if user.tasks|length > 0 %}
+                                        <li class="nav-icon-btn dropdown">
+                                            <a href="#notifications" class="dropdown-toggle" data-toggle="dropdown">
+                                                {% set nbTasks = 0 %}
+                                                {% for task in user.tasks %}
+                                                    {% if task.done == 0 %}{% set nbTasks = nbTasks+1 %}{% endif %}
+                                                {% endfor %}
+                                                {% if nbTasks > 0 %}<span
+                                                        class="label-icon">{{ nbTasks }}</span>{% endif %}
+                                                <i class="nav-icon fa fa-tasks"></i>
+                                                <span class="small-screen-text">Vous avez {{ user.tasks|length }}
+                                                    tâches</span>
+                                            </a>
+
+                                            <!-- NOTIFICATIONS -->
+                                            <!-- Javascript -->
+                                            <script>
+                                                init.push(function () {
+                                                    $('#main-navbar-notifications').slimScroll({height: 250});
+                                                });
+                                            </script>
+                                            <!-- / Javascript -->
+
+                                            <div class="dropdown-menu widget-notifications no-padding"
+                                                 style="width: 300px">
+                                                <div class="header">Notifications</div>
+                                                <div class="notifications-list" id="main-navbar-notifications">
+                                                    {% set taskNumber = 0 %}
+                                                    {% for task in user.tasks %}
+                                                        {% set taskNumber = taskNumber+1 %}
+                                                        {% if taskNumber <= 5 %}
+                                                            <div class="notification">
+                                                                <div class="notification-description">
+                                                                    <strong>#{{ task.id }} {{ task.type.name }}</strong><br>{{ task.description }}
+                                                                    <br>
+                                                                    {% if task.locked == 1 %}
+                                                                        <span class="pull-right label badge-warning"
+                                                                              style="top: -12px;">En cours de traitement</span>
+                                                                    {% elseif task.done == 0 %}
+                                                                        <span class="pull-right label label-warning"
+                                                                              style="top: -12px;">En attente d'activation</span>
+                                                                    {% elseif task.error == 1 %}
+                                                                        <span class="pull-right label label-danger"
+                                                                              style="top: -12px;">Une erreur est survenue</span>
+                                                                    {% elseif task.cancel == 1 %}
+                                                                        <span class="pull-right label badge-medium"
+                                                                              style="top: -12px;">Annulé</span>
+                                                                    {% else %}
+                                                                        <span class="pull-right label label-success"
+                                                                              style="top: -12px;">Terminée</span>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="notification-ago"></div>
+                                                            </div> <!-- / .notification -->
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div> <!-- / .notifications-list -->
+                                                <a href="{{ path('awhs_tasks_homepage') }}" class="footer">Voir toutes
+                                                    les tâches</a>
+                                            </div> <!-- / .dropdown-menu -->
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                                <!-- /3. $END_NAVBAR_ICON_BUTTONS -->
+                                {% if user is defined %}
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
+                                            <img src="{{ asset('/images/avatar5.png') }}" alt="">
+                                            <span>{{ user.firstname ~ ' ' ~ user.lastname }}</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{ path("fos_user_profile_show") }}">Mon Compte</a></li>
+                                            <li><a href="{{ path("fos_user_profile_edit") }}"><i
+                                                            class="dropdown-icon fa fa-cog"></i> Paramètres</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="{{ path("fos_user_security_logout") }}"><i
+                                                            class="dropdown-icon fa fa-power-off"></i> Déconnexion</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                {% endif %}
+                            </ul> <!-- / .navbar-nav -->
+                        </div> <!-- / .right -->
+                    </div>
+                </div> <!-- / #main-navbar-collapse -->
+            </div> <!-- / .navbar-inner -->
+        </div> <!-- / #main-navbar -->
+        <!-- /2. $END_MAIN_NAVIGATION -->
+
+        <div id="main-menu" role="navigation">
+            <div id="main-menu-inner">
+                <ul class="navigation">
+                    {% block sidebarMenuAdmin %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {% set currentPath = path(app.request.attributes.get('_route'),
+                            app.request.attributes.get('_route_params')) %}
+                            {% set uri = currentPath %}
+
+                            {% if uri starts with '/app_dev' %}
+                                <li><a tabindex="-1" href="{{ uri|replace({'/app_dev.php': ''}) }}"><i
+                                                class="menu-icon fa fa-dashboard"></i><span class="mm-text">Switch to Prod</span></a>
+                                </li>
+                            {% else %}
+                                <li><a tabindex="-1" href="/app_dev.php{{ uri }}"><img
+                                                src="{{ asset('images/icons/flat/svg/puzzle.svg') }}"
+                                                class="menu-icon"/><span class="mm-text">Switch to Dev</span></a>
+                                </li>
+                            {% endif %}
+                            <li class="mm-dropdown">
+                                <a href="#"><i class="menu-icon fa fa-dashboard"></i><span class="mm-text">Administration</span></a>
+                                <ul>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path('awhs_admin_homepage') }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/organization.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Home</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path('awhs_admin_servers') }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/mind_map.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Servers</span></a>
+                                    </li>
+                                    <li class="mm-dropdown">
+                                        <a tabindex="-1" href="#"><img
+                                                    src="{{ asset('images/icons/flat/svg/globe.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">IPs</span></a>
+                                        <ul>
+                                            <li>
+                                                <a tabindex="-1" href="{{ path('awhs_admin_ips') }}"><i
+                                                            class="menu-icon fa fa-list"></i><span class="mm-text">Adresses IP</span></a>
+                                            </li>
+                                            <li>
+                                                <a tabindex="-1" href="{{ path('awhs_admin_ip_add') }}"><i
+                                                            class="menu-icon fa fa-at"></i><span class="mm-text">Ajouter une IP</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="mm-dropdown">
+                                        <a tabindex="-1" href="#"><i class="menu-icon fa fa-exchange"></i><span
+                                                    class="mm-text">Produits & Catégories</span></a>
+                                        <ul>
+                                            <li>
+                                                <a tabindex="-1" href="{{ path('awhs_core_shop_products') }}"><span
+                                                            class="mm-text">Produits</span></a>
+                                            </li>
+                                            <li>
+                                                <a tabindex="-1" href="{{ path('awhs_core_categories') }}"><span
+                                                            class="mm-text">Catégories</span></a>
+                                            </li>
+                                            <li>
+                                                <a tabindex="-1"
+                                                   href="{{ path('awhs_core_subscription_packages') }}"><span
+                                                            class="mm-text">Packages</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path('users_admin') }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/conference_call.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Customers</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path("awhs_admin_crm_homepage") }}">
+                                            <img
+                                                    src="{{ asset('images/icons/flat/svg/customer_support.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Tickets</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path("awhs_core_admin_subscriptions") }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/package.svg') }}"
+                                                    class="menu-icon"/><span class="mm-text">Souscriptions</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path("awhs_admin_products") }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/org_unit.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Produits</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path("awhs_core_admin_invoices") }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/sales_performance.svg') }}"
+                                                    class="menu-icon"/><span
+                                                    class="mm-text">Factures</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="{{ path('awhs_admin_tasks_homepage') }}"><img
+                                                    src="{{ asset('images/icons/flat/svg/list.svg') }}"
+                                                    class="menu-icon"/><span class="mm-text">Tâches générales</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endblock %}
+                    <li class="mm-dropdown">
+                        <a tabindex="-1" href="{{ path("fos_user_profile_show") }}"><i class="menu-icon fa fa-user"></i><span
+                                    class="mm-text">Mon compte</span></a>
+                        <ul>
+                            <li>
+                                <a tabindex="-1" href="{{ path('awhs_core_subscriptions') }}"><i
+                                            class="menu-icon fa fa-calendar"></i><span
+                                            class="mm-text">Mes souscriptions</span></a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="{{ path('awhs_user_account_products') }}"><i
+                                            class="menu-icon fa fa-cubes"></i><span class="mm-text">Mes produits</span></a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="{{ path('awhs_core_invoices') }}"><i
+                                            class="menu-icon fa fa-money"></i><span class="mm-text">Mes factures</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('awhs_tasks_homepage') }}"><i class="menu-icon fa fa-tasks"></i><span
+                                            class="mm-text">Mes tâches</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% if bundle_exists('AWHSWakeBundle') %}
+                        <li>
+                            <a tabindex="-1" href="{{ path('awhs_wake_computers') }}"><i
+                                        class="menu-icon fa fa-heart-o"></i><span class="mm-text"><span
+                                            style="color: #d70909; ">W</span>ake <span style="color: #d70909; ">O</span>n <span
+                                            style="color: #d70909; ">W</span>an</span></a>
+                        </li>
+                    {% endif %}
+                    {% block sidebarMenuMore %}{% endblock %}
+                    <li class="mm-dropdown">
+                        <a href="#"><i class="menu-icon fa fa-life-ring"></i><span class="mm-text">Support</span></a>
+                        <ul>
+                            <li>
+                                <a tabindex="-1" href="{{ path("awhs_crms") }}"><i
+                                            class="menu-icon fa fa-ticket"></i><span class="mm-text">Mes tickets</span></a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="{{ path("awhs_crm_create") }}"><i
+                                            class="menu-icon fa fa-pencil"></i><span
+                                            class="mm-text">Ouvrir un ticket</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a tabindex="-1" href="{{ path('awhs_core_shop') }}"><i
+                                    class="menu-icon fa fa-shopping-cart"></i><span class="mm-text">Boutique</span></a>
+                    </li>
+                    <li>
+                        <a tabindex="-1" href="{{ path('awhs_core_cart') }}"><i
+                                    class="menu-icon fa fa-shopping-basket"></i><span class="mm-text">Panier</span></a>
+                    </li>
+                </ul> <!-- / .navigation -->
+            </div> <!-- / #main-menu-inner -->
+        </div> <!-- / #main-menu -->
+        <!-- /4. $MAIN_MENU -->
+
+        <div id="content-wrapper">
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="alert alert-info fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('warning') %}
+                <div class="alert alert-warning fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>/!\</strong> {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>/!\</strong> {{ flashMessage }}
+                </div>
+            {% endfor %}
+
+            {% block content %}
+
+            {% endblock %}
+
+            <div id="footer" class="row">
+                <hr>
+                <div class="container">
+                    <center>
+                        <p>Copyright &copy; 2010-2017 <a href="https://nicolasmeloni.com/fr/awhspanel">AWHS Panel</a>.
+                            Tous droits réservés.</p>
+                        <p></p>
+                        <p>AWHS Panel powered by <a class="link" href="https://nicolasmeloni.com" target="_blank"
+                                                    title="Nicolas Meloni">Nicolas Meloni</a></p>
+                    </center>
+                </div>
+            </div>
+
+        </div> <!-- / #content-wrapper -->
+        <div id="main-menu-bg"></div>
+    </div> <!-- / #main-wrapper -->
+
+    <!-- Get jQuery from Google CDN -->
+    <!--[if !IE]> -->
+    <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">' + "<" + "/script>"); </script>
+    <!-- <![endif]-->
+    <!--[if lte IE 9]>
+    <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">' + "<" + "/script>"); </script>
+    <![endif]-->
+
+
+    {% javascripts
+    '@AWHSCoreBundle/Resources/public/js/bootstrap.min.js'
+    '@AWHSCoreBundle/Resources/public/js/modern-black-admin.min.js'
+    output='js/main.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% block extendJsBottom %}{% endblock %}
+
+    <script type="text/javascript">
+        init.push(function () {
+            // Javascript code here
+        })
+        window.ModernBlackAdmin.start(init);
+    </script>
+
+    </body>
+    </html>
+{% endspaceless %}

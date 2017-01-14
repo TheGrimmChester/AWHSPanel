@@ -1,0 +1,22 @@
+{% extends '::'~awhs.template~'/base_login.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ app_name }} - Register{% endblock %}
+
+{% block navbarMenu %}<ul class="nav navbar-nav">{% endblock %}
+
+{% block fastNavigation %}{% endblock %}
+
+{% block pageHeader %}{% endblock %}
+
+{% block sidebarMenu %}
+	{% block sidebarMenuDashboard %}{% endblock %}
+	{% block sidebarMenuMore %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+{% block fos_user_content %}
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock %}
