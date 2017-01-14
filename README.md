@@ -19,11 +19,12 @@ Edit the `app/config/parameters.yml` file with your own access.
 5. In the same file you have to change the secret string:  
 You can use this website: [http://nux.net/secret](http://nux.net/secret) to help you.  
 6. From the ¨panel¨ directory:  
-`composer install`
+`composer install`  
 7. Uncomment few lines in `app/AppKernel.php` (l.19-20 & l.31)  
 * new FOS\UserBundle\FOSUserBundle(),
 * new FM\BbcodeBundle\FMBbcodeBundle(),
-* $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+* $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();  
+
 8. Basic Apache 2.4 VirtualHost  
 ```text
 <VirtualHost *:80>
@@ -40,7 +41,7 @@ You can use this website: [http://nux.net/secret](http://nux.net/secret) to help
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
-```
+```  
 9. You may have to set permissions back to www-data  
 `chown -R www-data:www-data /usr/local/awhspanel/panel/*`
 
