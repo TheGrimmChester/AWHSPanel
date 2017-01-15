@@ -49,11 +49,11 @@ You can use this website: [http://nux.net/secret](http://nux.net/secret) to help
 Now the base is functional. You can install our bundles.
 
 ##Bundles
-###Core Bundles
-* [UserBundle](https://github.com/TheGrimmChester/UserBundle)
-* [CoreBundle](https://github.com/TheGrimmChester/CoreBundle)
-* [CrmBundle](https://github.com/TheGrimmChester/CrmBundle)
-* [TaskBundle](https://github.com/TheGrimmChester/TaskBundle)
+###Core Bundles (install in order)
+1. [UserBundle](https://github.com/TheGrimmChester/UserBundle)
+2. [TaskBundle](https://github.com/TheGrimmChester/TaskBundle)
+3. [CrmBundle](https://github.com/TheGrimmChester/CrmBundle)
+4. [CoreBundle](https://github.com/TheGrimmChester/CoreBundle)
 
 ###Extra Bundles (not currently available)
 * [WebHostingBundle](#)
